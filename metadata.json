@@ -1,0 +1,48 @@
+{
+  "name": "cesnet-sentry",
+  "version": "0.1.0",
+  "author": "cesnet",
+  "summary": "Apache Sentry Setup",
+  "license": "MIT",
+  "source": "https://github.com/MetaCenterCloudPuppet/cesnet-sentry",
+  "project_page": "https://github.com/MetaCenterCloudPuppet/cesnet-sentry",
+  "issues_url": "https://github.com/MetaCenterCloudPuppet/cesnet-sentry/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 1.0.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    }
+  ]
+}
