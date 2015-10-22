@@ -1,6 +1,6 @@
 # == Class sentry::server
 #
-# Sentry server setup.
+# Sentry store.
 #
 class sentry::server {
   include ::sentry::server::install

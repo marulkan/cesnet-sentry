@@ -19,7 +19,7 @@
 
 ## Module Description
 
-This puppet module installs and setup Apache Sentry, a system for enforcing fine grained role based authorization to data and metadata stored on a Hadoop cluster.
+This puppet module installs and setup Apache Sentry - system for enforcing fine grained role based authorization to data and metadata stored on a Hadoop cluster.
 
 <a name="setup"></a>
 ## Setup
@@ -114,7 +114,9 @@ This puppet module installs and setup Apache Sentry, a system for enforcing fine
 <a name="reference"></a>
 ## Reference
 
-* [**``sentry``**](#class-sentry): Apache Sentry Setup
+* [**``sentry``**](#class-sentry): Apache Sentry setup
+* **`sentry::client`**: Sentry client
+* **`sentry::server`**: Sentry store
 
 <a name="class-sentry"></a>
 <a name="parameters"></a>
@@ -127,6 +129,10 @@ Apache Sentry Setup.
 Switches the alternatives used for the configuration. Default: 'cluster' (Debian) or undef.
 
 Use it only when supported (for example with Cloudera distribution).
+
+####`admin_groups`
+
+List of groups allowed to make policy updates. Default: ['sentry'].
 
 ####`db`
 
@@ -178,7 +184,6 @@ Not supported yet:
 
 * security
 * web interface
-* need to separate out server-specific configuration (DB passwords)
 
 <a name="development"></a>
 ##Development

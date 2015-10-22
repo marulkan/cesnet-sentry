@@ -1,9 +1,11 @@
 # == Class: sentry
 #
-# Apache Sentry Setup.
+# Apache Sentry setup.
 #
 class sentry (
+  $sentry_hostname = $::fqdn,
   $alternatives = '::default',
+  $admin_groups = ['sentry'],
   $db = 'derby',
   $db_host = 'localhost',
   $db_user = 'sentry',
@@ -51,14 +53,27 @@ class sentry (
   }
 
   $sentry_properties = {
-    #'datanucleus.autoCreateSchema' => false,
-    #'datanucleus.autoCreateTables' => true,
-    #'datanucleus.fixedDatastore' => true,
     'sentry.service.security.mode' => 'none',
-    'sentry.service.admin.group' => 'admin1',
     'sentry.service.allow.connect' => 'impala,hive,solr',
+    'sentry.hive.provider.backend' => 'org.apache.sentry.provider.db.SimpleDBProviderBackend',
+  }
+  $sentry_client_properties = {
+    'sentry.service.client.server.rpc-address' => $sentry_hostname,
+    'sentry.service.client.server.rpc-connection-timeout' => 200000,
+  }
+  if !$admin_groups or empty($admin_groups) {
+    $_admin_groups = '::undef'
+  } else {
+    $_admin_groups = join($admin_groups, ',')
+  }
+  $sentry_server_properties = {
+    'sentry.service.admin.group' => $_admin_groups,
     'sentry.verify.schema.version' => true,
   }
 
-  $_properties = merge($db_properties, $sentry_properties, $properties)
+  if $sentry_hostname == $::fqdn {
+    $_properties = merge($db_properties, $sentry_properties, $sentry_server_properties, $sentry_client_properties, $properties)
+  } else {
+    $_properties = merge($sentry_properties, $sentry_client_properties, $properties)
+  }
 }
