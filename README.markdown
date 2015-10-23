@@ -14,8 +14,7 @@
     * [Sentry with PostgreSQL](#usage-postgresql)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Module parameters (spark class)](#parameters)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+5. [Development - Guide for contributing to the module](#development)
 
 ## Module Description
 
@@ -171,19 +170,27 @@ Database password for *mysql*, *postgresql*, and *oracle*. Default: undef.
 
 It can be overriden by *sentry.store.jdbc.password* property.
 
+####`keytab`
+
+Keytab file for Sentry. Default: '/etc/security/keytab/sentry.service.keytab'.
+
+This will set also property *sentry.service.server.keytab*, if not specified directly.
+
 ####`properties`
 
 Additional properties for sentry. Default: undef.
 
 "::undef" property value will remove given property set automatically by this module, empty string sets the empty value.
 
-<a name="limitations"></a>
-## Limitations
+####`realm`
 
-Not supported yet:
+Enables security. Default: undef.
 
-* security
-* web interface
+The value is the Kerberos realm to use.
+
+With security there is required:
+
+* */etc/security/keytab/sentry.service.keytab* (according to the *keytab* parameter)
 
 <a name="development"></a>
 ##Development

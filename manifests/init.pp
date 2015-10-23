@@ -11,7 +11,9 @@ class sentry (
   $db_user = 'sentry',
   $db_name = 'sentry',
   $db_password = undef,
+  $keytab = '/etc/security/keytab/sentry.service.keytab',
   $properties = undef,
+  $realm = undef,
 ) inherits ::sentry::params {
   include ::stdlib
 
@@ -52,28 +54,48 @@ class sentry (
     }
   }
 
-  $sentry_properties = {
-    'sentry.service.security.mode' => 'none',
-    'sentry.service.allow.connect' => 'impala,hive,solr',
-    'sentry.hive.provider.backend' => 'org.apache.sentry.provider.db.SimpleDBProviderBackend',
-  }
-  $sentry_client_properties = {
-    'sentry.service.client.server.rpc-address' => $sentry_hostname,
-    'sentry.service.client.server.rpc-connection-timeout' => 200000,
-  }
   if !$admin_groups or empty($admin_groups) {
     $_admin_groups = '::undef'
   } else {
     $_admin_groups = join($admin_groups, ',')
   }
-  $sentry_server_properties = {
-    'sentry.service.admin.group' => $_admin_groups,
-    'sentry.verify.schema.version' => true,
+  $sentry_properties = {
+    all => {
+      'sentry.service.allow.connect' => 'impala,hive,solr',
+      'sentry.hive.provider.backend' => 'org.apache.sentry.provider.db.SimpleDBProviderBackend',
+    },
+    client => {
+      'sentry.service.client.server.rpc-address' => $sentry_hostname,
+      'sentry.service.client.server.rpc-connection-timeout' => 200000,
+    },
+    server => {
+      'sentry.service.admin.group' => $_admin_groups,
+      'sentry.verify.schema.version' => true,
+    },
+  }
+
+  if $realm and $realm != '' {
+    $sec_properties = {
+      all => {
+        'sentry.service.security.mode' => 'kerberos',
+        'sentry.service.server.principal' => "sentry/_HOST@${realm}",
+      },
+      server => {
+        'sentry.service.server.keytab' => $keytab,
+      },
+    }
+  } else {
+    $sec_properties = {
+      all => {
+        'sentry.service.security.mode' => 'none',
+      },
+      server => {},
+    }
   }
 
   if $sentry_hostname == $::fqdn {
-    $_properties = merge($db_properties, $sentry_properties, $sentry_server_properties, $sentry_client_properties, $properties)
+    $_properties = merge($db_properties, $sentry_properties['all'], $sentry_properties['server'], $sentry_properties['client'],  $sec_properties['all'], $sec_properties['server'], $properties)
   } else {
-    $_properties = merge($sentry_properties, $sentry_client_properties, $properties)
+    $_properties = merge($sentry_properties['all'], $sentry_properties['client'],  $sec_properties['all'], $properties)
   }
 }

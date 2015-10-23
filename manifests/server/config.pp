@@ -19,4 +19,13 @@ class sentry::server::config {
   hadoop_lib::jdbc { '/usr/lib/sentry/lib':
     db => $::sentry::db,
   }
+
+  if $::sentry::realm {
+    file { $::sentry::keytab:
+      owner => 'sentry',
+      group => 'sentry',
+      mode  => '0400',
+      alias => 'sentry.service.keytab',
+    }
+  }
 }
