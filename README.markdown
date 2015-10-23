@@ -15,7 +15,7 @@
     * [Sentry with MySQL](#usage-mysql)
     * [Sentry with PostgreSQL](#usage-postgresql)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-    * [Module parameters (spark class)](#parameters)
+    * [Module parameters (sentry class)](#parameters)
 5. [Development - Guide for contributing to the module](#development)
 
 ## Module Description
