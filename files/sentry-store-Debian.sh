@@ -37,7 +37,9 @@ BIGTOP_DEFAULTS_DIR=${BIGTOP_DEFAULTS_DIR-/etc/default}
 [ -n "${BIGTOP_DEFAULTS_DIR}" -a -r ${BIGTOP_DEFAULTS_DIR}/sentry-store ] && . ${BIGTOP_DEFAULTS_DIR}/sentry-store
 
 # Autodetect JAVA_HOME if not defined
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
+if [ -f /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
+  . /usr/lib/bigtop-utils/bigtop-detect-javahome
+fi
 
 RETVAL_SUCCESS=0
 
