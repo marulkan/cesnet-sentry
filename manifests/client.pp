@@ -6,7 +6,7 @@ class sentry::client {
   include ::sentry::client::install
   include ::sentry::client::config
 
-  Class['sentry::client::install'] ->
-  Class['sentry::client::config'] ->
-  Class['sentry::client']
+  Class['sentry::client::install']
+  -> Class['sentry::client::config']
+  -> Class['sentry::client']
 }
