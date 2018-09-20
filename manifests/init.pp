@@ -61,11 +61,12 @@ class sentry (
   }
   $sentry_properties = {
     all => {
-      'sentry.service.allow.connect' => 'impala,hive,solr',
+      'sentry.service.allow.connect' => 'impala,hive,solr,hue',
       'sentry.hive.provider.backend' => 'org.apache.sentry.provider.db.SimpleDBProviderBackend',
     },
     client => {
       'sentry.service.client.server.rpc-address' => $sentry_hostname,
+      'sentry.service.client.server.rpc-addresses' => $sentry_hostname,
       'sentry.service.client.server.rpc-connection-timeout' => 200000,
     },
     server => {
