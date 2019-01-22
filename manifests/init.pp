@@ -12,6 +12,7 @@ class sentry (
   $db_name = 'sentry',
   $db_password = undef,
   $keytab = '/etc/security/keytab/sentry.service.keytab',
+  $keytab_source = undef,
   $properties = undef,
   $realm = undef,
 ) inherits ::sentry::params {

@@ -21,11 +21,21 @@ class sentry::server::config {
   }
 
   if $::sentry::realm {
-    file { $::sentry::keytab:
-      owner => 'sentry',
-      group => 'sentry',
-      mode  => '0400',
-      alias => 'sentry.service.keytab',
+    if $::sentry::keytab_source {
+      file { $::sentry::keytab:
+        owner  => 'sentry',
+        group  => 'sentry',
+        mode   => '0400',
+        alias  => 'sentry.service.keytab',
+        source => $sentry::keytab_source,
+      }
+    } else {
+      file { $::sentry::keytab:
+        owner => 'sentry',
+        group => 'sentry',
+        mode  => '0400',
+        alias => 'sentry.service.keytab',
+      }
     }
   }
 }
